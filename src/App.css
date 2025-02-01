@@ -1,5 +1,5 @@
 html {
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .App {
@@ -8,18 +8,19 @@ html {
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+  height: 4rem;
 }
 
 .App-header {
-  background-color: #222;
-  padding: 20px;
+  display: flex;
+  background-color: #4d4d4d;
+  padding: 1rem;
   color: white;
 }
 
 .App-title {
-  font-size: 1.5em;
+  font-size: x-large;
+  padding-left: 2rem;
 }
 
 .App-intro {

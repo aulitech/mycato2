@@ -7,10 +7,11 @@ import {
   materialCells,
   materialRenderers,
 } from '@jsonforms/material-renderers';
-import RatingControl from './RatingControl';
-import ratingControlTester from '../ratingControlTester';
+//import RatingControl from './RatingControl';
+//import ratingControlTester from '../ratingControlTester';
 import schema from '../schema.json';
 import uischema from '../uischema.json';
+import { initialData } from './InitialData';
 
 const classes = {
   container: {
@@ -38,21 +39,13 @@ const classes = {
   },
 };
 
-const initialData = {
-  name: 'Send email to Adrian',
-  description: 'Confirm if you have passed the subject\nHereby ...',
-  done: true,
-  recurrence: 'Daily',
-  rating: 3,
-};
-
 const renderers = [
   ...materialRenderers,
   //register custom renderers
-  { tester: ratingControlTester, renderer: RatingControl },
+  //{ tester: ratingControlTester, renderer: RatingControl },
 ];
 
-export const JsonFormsDemo: FC = () => {
+export const MyCato: FC = () => {
   const [data, setData] = useState<object>(initialData);
   const stringifiedData = useMemo(() => JSON.stringify(data, null, 2), [data]);
 

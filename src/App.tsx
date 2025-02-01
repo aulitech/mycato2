@@ -1,12 +1,12 @@
 import './App.css';
 import { Header } from './components/Header';
-import { JsonFormsDemo } from './components/JsonFormsDemo';
+import { MyCato } from './components/MyCato';
 
 const App = () => {
   return (
     <>
       <Header />
-      <JsonFormsDemo />
+      <MyCato />
     </>
   );
 };
