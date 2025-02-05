@@ -7,8 +7,7 @@ import {
   materialCells,
   materialRenderers,
 } from '@jsonforms/material-renderers';
-//import RatingControl from './RatingControl';
-//import ratingControlTester from '../ratingControlTester';
+
 import schema from '../schema.json';
 import uischema from '../uischema.json';
 import { initialData } from './InitialData';
@@ -59,7 +58,19 @@ export const MyCato: FC = () => {
       spacing={1}
       style={classes.container}>
       <Grid item sm={6}>
-        <Typography variant={'h4'}>Bound data</Typography>
+        <div style={classes.demoform}>
+          <JsonForms
+            schema={schema}
+            uischema={uischema}
+            data={data}
+            renderers={renderers}
+            cells={materialCells}
+            onChange={({ data }) => setData(data)}
+          />
+        </div>
+      </Grid>
+      <Grid item sm={6}>
+        <Typography variant={'h4'}>config.json</Typography>
         <div style={classes.dataContent}>
           <pre id="boundData">{stringifiedData}</pre>
         </div>
@@ -71,19 +82,6 @@ export const MyCato: FC = () => {
           data-testid="clear-data">
           Clear data
         </Button>
-      </Grid>
-      <Grid item sm={6}>
-        <Typography variant={'h4'}>Rendered form</Typography>
-        <div style={classes.demoform}>
-          <JsonForms
-            schema={schema}
-            uischema={uischema}
-            data={data}
-            renderers={renderers}
-            cells={materialCells}
-            onChange={({ data }) => setData(data)}
-          />
-        </div>
       </Grid>
     </Grid>
   );

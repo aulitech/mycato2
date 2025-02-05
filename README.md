@@ -7,7 +7,7 @@ This seed demonstrates how to use [JSON Forms](https://jsonforms.io) with React 
 - Execute `npm run build` to build the application.
 - Execute `npm start` to start the application.
 
-Browse to http://localhost:3000 to see the application in action.
+Browse to [localhost](http://localhost:3000) to see the application in action.
 
 ## File Structure
 
@@ -17,6 +17,8 @@ Let's briefly have a look at the most important files:
 
 - `src/schema.json` contains the JSON schema (also referred to as 'data schema')
 - `src/uischema.json` contains the UI schema
+
+[examples](https://jsonforms.io/examples/layouts/)
 
 ### These files should not need changes
 
