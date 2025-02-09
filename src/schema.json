@@ -1,67 +1,405 @@
 {
-    "type": "object",
-    "properties": {
-        "global_info": {
-            "label": "General Info",
-            "type": "object",
-            "properties": {
-                "name": {
-                    "label": "Name",
-                    "type": "string",
-                    "minLength": 3,
-                    "maxLength": 14,
-                    "description": "Cato's name. 1-14 characte)rs, aA-zZ, 0-9, space and _-."
-                },
-                "HW_UID": {
-                    "type": "string",
-                    "label": "Hardware ID",
-                    "description": "Cato's Hardware ID (Read-Only)"
-                },
-                "sleep": {
-                    "type": "object",
-                    "properties": {
-                        "timeout": {
-                            "label": "Sleep Timeout",
-                            "type": "integer",
-                            "min": 0,
-                            "max": 3600,
-                            "description": "Time in seconds before Cato goes to sleep. 0-3600"
-                        },
-                        "threshold": {
-                            "label": "Threshold",
-                            "type": "integer",
-                            "min": 0,
-                            "max": 10,
-                            "description": "Enable/disable auto sleep"
-                        }
-                    }
-                },
-                "orientation": {
-                    "label": "Orientation",
-                    "type": "string",
-                    "enum": [
-                        "flat",
-                        "right",
-                        "left"
-                    ]
-                }
-            }
+  "type": "object",
+  "properties": {
+    "global_info": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
         },
-        "connections": {
-            "label": "Connections",
-            "type": "array",
-            "items": {
+        "HW_UID": {
+          "type": "string"
+        },
+        "sleep": {
+          "type": "object",
+          "properties": {
+            "timeout": {
+              "type": "integer"
+            },
+            "threshold": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": true,
+          "required": [
+            "timeout",
+            "threshold"
+          ]
+        },
+        "orientation": {
+          "type": "object",
+          "properties": {
+            "front": {
+              "type": "string"
+            },
+            "bottom": {
+              "type": "string"
+            },
+            "left": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": true,
+          "required": [
+            "front",
+            "bottom",
+            "left"
+          ]
+        },
+        "calibration": {
+          "type": "object",
+          "properties": {
+            "drift": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
+            },
+            "auto_threshold": {
+              "type": "integer"
+            },
+            "auto_samples": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": true,
+          "required": [
+            "drift",
+            "auto_threshold",
+            "auto_samples"
+          ]
+        },
+        "battery": {
+          "type": "object",
+          "properties": {
+            "low": {
+              "type": "integer"
+            },
+            "high": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": true,
+          "required": [
+            "low",
+            "high"
+          ]
+        },
+        "action_list": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
                 "type": "object",
                 "properties": {
-                    "connection_name": {
-                        "label": "Name",
-                        "type": "string",
-                        "minLength": 3,
-                        "maxLength": 14,
-                        "description": "Connection name. 1-14 characters, aA-zZ, 0-9, space and _-."
+                  "command": {
+                    "type": "string"
+                  },
+                  "args": {
+                    "type": "array",
+                    "items": {}
+                  }
+                },
+                "additionalProperties": true,
+                "required": [
+                  "command",
+                  "args"
+                ]
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "command": {
+                    "type": "string"
+                  },
+                  "args": {
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ]
                     }
-                }
-            }
+                  }
+                },
+                "additionalProperties": true,
+                "required": [
+                  "command",
+                  "args"
+                ]
+              }
+            ]
+          }
         }
+      },
+      "additionalProperties": true,
+      "required": [
+        "name",
+        "HW_UID",
+        "sleep",
+        "orientation",
+        "calibration",
+        "battery",
+        "action_list"
+      ]
+    },
+    "connections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "connection_name": {
+            "type": "string"
+          },
+          "screen_size": {
+            "type": "object",
+            "properties": {
+              "height": {
+                "type": "integer"
+              },
+              "width": {
+                "type": "integer"
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "height",
+              "width"
+            ]
+          },
+          "operation_mode": {
+            "type": "object",
+            "properties": {
+              "pointer_enabled": {
+                "type": "boolean"
+              },
+              "gesture_enabled": {
+                "type": "boolean"
+              },
+              "tapper_enabled": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "pointer_enabled",
+              "gesture_enabled",
+              "tapper_enabled"
+            ]
+          },
+          "gesture": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "confidence_threshold": {
+                "type": "number"
+              },
+              "length": {
+                "type": "integer"
+              },
+              "idle_cutoff": {
+                "type": "integer"
+              },
+              "start_threshold": {
+                "type": "number"
+              },
+              "idle_threshold": {
+                "type": "integer"
+              },
+              "timeout": {
+                "type": "integer"
+              },
+              "gc_timeout": {
+                "type": "integer"
+              },
+              "turbo_rate": {
+                "type": "object",
+                "properties": {
+                  "initial": {
+                    "type": "integer"
+                  },
+                  "minimum": {
+                    "type": "number"
+                  },
+                  "decay_rate": {
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": true,
+                "required": [
+                  "initial",
+                  "minimum",
+                  "decay_rate"
+                ]
+              },
+              "bindings": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "key",
+              "confidence_threshold",
+              "length",
+              "idle_cutoff",
+              "start_threshold",
+              "idle_threshold",
+              "timeout",
+              "gc_timeout",
+              "turbo_rate",
+              "bindings"
+            ]
+          },
+          "mouse": {
+            "type": "object",
+            "properties": {
+              "idle_threshold": {
+                "type": "integer"
+              },
+              "min_run_cycles": {
+                "type": "integer"
+              },
+              "idle_duration": {
+                "type": "integer"
+              },
+              "dwell_duration": {
+                "type": "integer"
+              },
+              "dwell_repeat": {
+                "type": "boolean"
+              },
+              "scale_x": {
+                "type": "integer"
+              },
+              "scale_y": {
+                "type": "integer"
+              },
+              "dynamic_mouse": {
+                "type": "object",
+                "properties": {
+                  "input": {
+                    "type": "object",
+                    "properties": {
+                      "slow": {
+                        "type": "integer"
+                      },
+                      "fast": {
+                        "type": "integer"
+                      }
+                    },
+                    "additionalProperties": true,
+                    "required": [
+                      "slow",
+                      "fast"
+                    ]
+                  },
+                  "output": {
+                    "type": "object",
+                    "properties": {
+                      "slow": {
+                        "type": "number"
+                      },
+                      "fast": {
+                        "type": "integer"
+                      }
+                    },
+                    "additionalProperties": true,
+                    "required": [
+                      "slow",
+                      "fast"
+                    ]
+                  }
+                },
+                "additionalProperties": true,
+                "required": [
+                  "input",
+                  "output"
+                ]
+              },
+              "shake_size": {
+                "type": "integer"
+              },
+              "num_shake": {
+                "type": "integer"
+              },
+              "mouse_type": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "idle_threshold",
+              "min_run_cycles",
+              "idle_duration",
+              "dwell_duration",
+              "dwell_repeat",
+              "scale_x",
+              "scale_y",
+              "dynamic_mouse",
+              "shake_size",
+              "num_shake",
+              "mouse_type"
+            ]
+          },
+          "clicker": {
+            "type": "object",
+            "properties": {
+              "max_click_spacing": {
+                "type": "number"
+              },
+              "tap_ths": {
+                "type": "integer"
+              },
+              "quiet": {
+                "type": "integer"
+              },
+              "shock": {
+                "type": "integer"
+              },
+              "bindings": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              }
+            },
+            "additionalProperties": true,
+            "required": [
+              "max_click_spacing",
+              "tap_ths",
+              "quiet",
+              "shock",
+              "bindings"
+            ]
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "connection_name",
+          "screen_size",
+          "operation_mode",
+          "gesture",
+          "mouse",
+          "clicker"
+        ]
+      }
     }
+  },
+  "additionalProperties": true,
+  "required": [
+    "global_info",
+    "connections"
+  ]
 }

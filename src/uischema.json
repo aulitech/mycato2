@@ -10,10 +10,12 @@
           "elements": [
             {
               "type": "Control",
+              "label": "Device Name",
               "scope": "#/properties/global_info/properties/name"
             },
             {
               "type": "Control",
+              "label": "Device ID",
               "scope": "#/properties/global_info/properties/HW_UID",
               "options": {
                 "readonly": true
@@ -26,20 +28,42 @@
           "elements": [
             {
               "type": "Control",
+              "label": "Sleep Timeout",
               "scope": "#/properties/global_info/properties/sleep/properties/timeout"
             },
             {
               "type": "Control",
+              "label": "Sleep Threshold",
               "scope": "#/properties/global_info/properties/sleep/properties/threshold"
             }
           ]
         },
         {
+          "type": "HorizontalLayout",
+          "elements": [
+            {
+              "type": "Control",
+              "scope": "#/properties/global_info/properties/orientation/properties/front"
+            },
+            {
+              "type": "Control",
+              "scope": "#/properties/global_info/properties/orientation/properties/bottom"
+            },
+            {
+              "type": "Control",
+              "scope": "#/properties/global_info/properties/orientation/properties/left"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Category",
+      "label": "Actions",
+      "elements": [
+        {
           "type": "Control",
-          "scope": "#/properties/global_info/properties/orientation",
-          "options": {
-            "format": "radio"
-          }
+          "scope": "#/properties/global_info/properties/action_list"
         }
       ]
     },

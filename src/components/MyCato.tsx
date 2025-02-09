@@ -21,16 +21,28 @@ const classes = {
     textAlign: 'center',
     padding: '0.25em',
   },
+  changeContent: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    overflow: 'wrap',
+    borderRadius: '0.25em',
+    backgroundColor: '#cecece',
+    marginBottom: '1rem',
+  },
   dataContent: {
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     borderRadius: '0.25em',
     backgroundColor: '#cecece',
     marginBottom: '1rem',
   },
   resetButton: {
     margin: 'auto !important',
-    display: 'block !important',
+    display: 'flex',
+    justifyContent: 'flex-start',
+    borderRadius: '0.25em',
+    backgroundColor: '#cecece',
+    marginBottom: '1rem',
   },
   demoform: {
     margin: 'auto',
@@ -44,45 +56,109 @@ const renderers = [
   //{ tester: ratingControlTester, renderer: RatingControl },
 ];
 
+interface Change<T = never> {
+  path: string;
+  value: T;
+}
+
+function findChanges<T>(
+  newObj: Record<string, T>,
+  oldObj: Record<string, T>,
+  path = '',
+): Change<T>[] {
+  const changes: Change<T>[] = [];
+  for (const key in newObj) {
+    const currentPath = path ? `${path}.${key}` : key;
+
+    if (
+      typeof newObj[key] === 'object' &&
+      newObj[key] !== null &&
+      oldObj &&
+      typeof oldObj[key] === 'object' &&
+      oldObj[key] !== null
+    ) {
+      const nestedChanges = findChanges(
+        newObj[key] as Record<string, T>,
+        oldObj[key] as Record<string, T>,
+        currentPath,
+      );
+      changes.push(...nestedChanges);
+    } else if (newObj[key] !== oldObj?.[key]) {
+      changes.push({
+        path: currentPath,
+        value: newObj[key],
+      });
+    }
+  }
+  return changes;
+}
+
+const changeQueue = [];
+let changedData = '';
+function queueChangedData(newData: typeof initialData) {
+  // queue changes for cato
+  const diff = findChanges(newData, initialData);
+  console.log(diff);
+  changeQueue.push(...diff);
+  changedData = JSON.stringify(diff, null, 2);
+}
+
 export const MyCato: FC = () => {
   const [data, setData] = useState<object>(initialData);
   const stringifiedData = useMemo(() => JSON.stringify(data, null, 2), [data]);
 
   const clearData = () => {
-    setData({});
+    setData(initialData);
   };
+
+  const [showJson, setShowJson] = useState(true);
+
   return (
-    <Grid
-      container
-      justifyContent={'center'}
-      spacing={1}
-      style={classes.container}>
-      <Grid item sm={6}>
-        <div style={classes.demoform}>
-          <JsonForms
-            schema={schema}
-            uischema={uischema}
-            data={data}
-            renderers={renderers}
-            cells={materialCells}
-            onChange={({ data }) => setData(data)}
-          />
-        </div>
+    <>
+      <button onClick={() => setShowJson(!showJson)}>Details</button>
+      <Grid
+        container
+        justifyContent={'center'}
+        spacing={1}
+        style={classes.container}>
+        <Grid item sm={6}>
+          <div style={classes.demoform}>
+            <JsonForms
+              schema={schema}
+              uischema={uischema}
+              data={data}
+              renderers={renderers}
+              cells={materialCells}
+              onChange={({ data }) => {
+                queueChangedData(data);
+                setData(data);
+              }}
+            />
+          </div>
+        </Grid>
+        {showJson && (
+          <>
+            <Grid item sm={6}>
+              <Grid>
+                <div style={classes.changeContent}>
+                  <pre id="changedData">{changedData}</pre>
+                </div>
+              </Grid>
+              <Typography variant={'h4'}>Configuration Details</Typography>
+              <Button
+                onClick={clearData}
+                color="primary"
+                variant="contained"
+                data-testid="clear-data">
+                Reset data
+              </Button>
+              <div style={classes.dataContent}>
+                <pre id="boundData">{stringifiedData}</pre>
+              </div>
+            </Grid>
+          </>
+        )}
       </Grid>
-      <Grid item sm={6}>
-        <Typography variant={'h4'}>config.json</Typography>
-        <div style={classes.dataContent}>
-          <pre id="boundData">{stringifiedData}</pre>
-        </div>
-        <Button
-          style={classes.resetButton}
-          onClick={clearData}
-          color="primary"
-          variant="contained"
-          data-testid="clear-data">
-          Clear data
-        </Button>
-      </Grid>
-    </Grid>
+    </>
   );
 };
