@@ -14,7 +14,10 @@
           "type": "object",
           "properties": {
             "timeout": {
-              "type": "integer"
+              "type": "number",
+              "minimum": 0,
+              "maximum": 600,
+              "default": 300
             },
             "threshold": {
               "type": "integer"
@@ -30,13 +33,37 @@
           "type": "object",
           "properties": {
             "front": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "+x",
+                "-x",
+                "+y",
+                "-y",
+                "+z",
+                "-z"
+              ]
             },
             "bottom": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "+x",
+                "-x",
+                "+y",
+                "-y",
+                "+z",
+                "-z"
+              ]
             },
             "left": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "+x",
+                "-x",
+                "+y",
+                "-y",
+                "+z",
+                "-z"
+              ]
             }
           },
           "additionalProperties": true,

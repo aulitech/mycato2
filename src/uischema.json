@@ -6,54 +6,57 @@
       "label": "General Info",
       "elements": [
         {
-          "type": "HorizontalLayout",
+          "type": "Group",
+          "label": "Identification",
           "elements": [
             {
-              "type": "Control",
-              "label": "Device Name",
-              "scope": "#/properties/global_info/properties/name"
-            },
-            {
-              "type": "Control",
-              "label": "Device ID",
-              "scope": "#/properties/global_info/properties/HW_UID",
-              "options": {
-                "readonly": true
-              }
+              "type": "HorizontalLayout",
+              "elements": [
+                {
+                  "type": "Control",
+                  "label": "Device Name",
+                  "scope": "#/properties/global_info/properties/name"
+                },
+                {
+                  "type": "Control",
+                  "label": "Device ID",
+                  "scope": "#/properties/global_info/properties/HW_UID",
+                  "options": {
+                    "readonly": true
+                  }
+                }
+              ]
             }
           ]
         },
         {
-          "type": "HorizontalLayout",
+          "type": "Group",
+          "label": "Sleep",
           "elements": [
             {
-              "type": "Control",
-              "label": "Sleep Timeout",
-              "scope": "#/properties/global_info/properties/sleep/properties/timeout"
-            },
-            {
-              "type": "Control",
-              "label": "Sleep Threshold",
-              "scope": "#/properties/global_info/properties/sleep/properties/threshold"
+              "type": "HorizontalLayout",
+              "elements": [
+                {
+                  "type": "Control",
+                  "label": "Sleep Timeout",
+                  "scope": "#/properties/global_info/properties/sleep/properties/timeout",
+                  "options": {
+                    "slider": true
+                  }
+                },
+                {
+                  "type": "Control",
+                  "label": "Sleep Threshold",
+                  "scope": "#/properties/global_info/properties/sleep/properties/threshold"
+                }
+              ]
             }
           ]
         },
         {
-          "type": "HorizontalLayout",
-          "elements": [
-            {
-              "type": "Control",
-              "scope": "#/properties/global_info/properties/orientation/properties/front"
-            },
-            {
-              "type": "Control",
-              "scope": "#/properties/global_info/properties/orientation/properties/bottom"
-            },
-            {
-              "type": "Control",
-              "scope": "#/properties/global_info/properties/orientation/properties/left"
-            }
-          ]
+          "type": "Control",
+          "label": "Orientation",
+          "scope": "#/properties/global_info/properties/orientation"
         }
       ]
     },

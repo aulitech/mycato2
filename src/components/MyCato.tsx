@@ -12,6 +12,9 @@ import schema from '../schema.json';
 import uischema from '../uischema.json';
 import { initialData } from './InitialData';
 
+import OrientationControl from './OrientationControl';
+import orientationTester from '../orientationTester';
+
 const classes = {
   container: {
     padding: '1em',
@@ -53,7 +56,7 @@ const classes = {
 const renderers = [
   ...materialRenderers,
   //register custom renderers
-  //{ tester: ratingControlTester, renderer: RatingControl },
+  { tester: orientationTester, renderer: OrientationControl },
 ];
 
 interface Change<T = never> {
@@ -84,10 +87,9 @@ function findChanges<T>(
       );
       changes.push(...nestedChanges);
     } else if (newObj[key] !== oldObj?.[key]) {
-      changes.push({
-        path: currentPath,
-        value: newObj[key],
-      });
+      const newData = {};
+      newData[currentPath] = newObj[key];
+      changes.push(newData);
     }
   }
   return changes;
@@ -96,7 +98,6 @@ function findChanges<T>(
 const changeQueue = [];
 let changedData = '';
 function queueChangedData(newData: typeof initialData) {
-  // queue changes for cato
   const diff = findChanges(newData, initialData);
   console.log(diff);
   changeQueue.push(...diff);
